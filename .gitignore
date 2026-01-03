@@ -39,3 +39,7 @@ yarn-error.log*
 *.temp
 *.bak
 *.backup
+
+# Documentation files (except README)
+*.md
+!README.md
