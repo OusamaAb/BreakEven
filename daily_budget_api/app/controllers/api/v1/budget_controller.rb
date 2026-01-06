@@ -32,7 +32,7 @@ module Api
       end
 
       def budget_params
-        params.permit(:base_daily_cents, :currency, :timezone, :carryover_mode)
+        params.permit(:base_daily_cents, :currency, :timezone, :carryover_mode, :subscription_budget_enabled, :monthly_subscription_budget_cents)
       end
 
       def budget_json(budget)
@@ -42,6 +42,8 @@ module Api
           currency: budget.currency,
           timezone: budget.timezone,
           carryover_mode: budget.carryover_mode,
+          subscription_budget_enabled: budget.subscription_budget_enabled,
+          monthly_subscription_budget_cents: budget.monthly_subscription_budget_cents,
           created_at: budget.created_at,
           updated_at: budget.updated_at
         }

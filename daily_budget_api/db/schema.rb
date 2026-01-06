@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_03_000325) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_05_161021) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -46,6 +46,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_03_000325) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "carryover_mode", default: "continuous", null: false
+    t.boolean "subscription_budget_enabled", default: false, null: false
+    t.integer "monthly_subscription_budget_cents"
     t.index ["user_id"], name: "index_budgets_on_user_id"
   end
 
@@ -74,6 +76,22 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_03_000325) do
     t.index ["budget_id"], name: "index_expenses_on_budget_id"
   end
 
+  create_table "subscriptions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name", null: false
+    t.integer "amount_cents", null: false
+    t.string "billing_cycle", null: false
+    t.string "category", null: false
+    t.string "status", default: "active", null: false
+    t.date "next_charge_date", null: false
+    t.date "last_charged_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["next_charge_date"], name: "index_subscriptions_on_next_charge_date"
+    t.index ["status"], name: "index_subscriptions_on_status"
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "supabase_uid", null: false
     t.string "email", null: false
@@ -87,4 +105,5 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_03_000325) do
   add_foreign_key "budgets", "users"
   add_foreign_key "day_ledgers", "budgets"
   add_foreign_key "expenses", "budgets"
+  add_foreign_key "subscriptions", "users"
 end

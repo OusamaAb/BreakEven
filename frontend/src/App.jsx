@@ -4,6 +4,7 @@ import { supabase } from './lib/supabase'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import History from './pages/History'
+import Subscriptions from './pages/Subscriptions'
 import Settings from './pages/Settings'
 import Layout from './components/Layout'
 
@@ -141,6 +142,18 @@ function App() {
           }
         />
         <Route
+          path="/dashboard"
+          element={
+            session ? (
+              <Layout>
+                <Dashboard />
+              </Layout>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+        <Route
           path="/history"
           element={
             session ? (
@@ -153,11 +166,35 @@ function App() {
           }
         />
         <Route
+          path="/subscriptions"
+          element={
+            session ? (
+              <Layout>
+                <Subscriptions />
+              </Layout>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+        <Route
           path="/settings"
           element={
             session ? (
               <Layout>
                 <Settings />
+              </Layout>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+        <Route
+          path="*"
+          element={
+            session ? (
+              <Layout>
+                <Navigate to="/" replace />
               </Layout>
             ) : (
               <Navigate to="/login" replace />

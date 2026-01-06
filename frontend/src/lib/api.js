@@ -84,4 +84,20 @@ export const api = {
   deleteExpense: (id) => apiRequest(`/api/v1/expenses/${id}`, {
     method: 'DELETE',
   }),
+
+  // Subscriptions
+  getSubscriptions: () => apiRequest('/api/v1/subscriptions'),
+  getSubscription: (id) => apiRequest(`/api/v1/subscriptions/${id}`),
+  createSubscription: (data) => apiRequest('/api/v1/subscriptions', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }),
+  updateSubscription: (id, data) => apiRequest(`/api/v1/subscriptions/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  }),
+  deleteSubscription: (id) => apiRequest(`/api/v1/subscriptions/${id}`, {
+    method: 'DELETE',
+  }),
+  getSubscriptionSummary: () => apiRequest('/api/v1/subscriptions/summary'),
 }
