@@ -16,6 +16,9 @@ Rails.application.configure do
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
   # config.require_master_key = true
 
+  # Set secret_key_base from environment variable
+  config.secret_key_base = ENV.fetch("SECRET_KEY_BASE")
+
   # Enable static file serving from the `/public` folder (turn off if using NGINX/Apache for it).
   config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 
@@ -34,7 +37,9 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.variant_processor = :mini_magick
+  # Note: API-only app doesn't use Active Storage, but Rails requires this config
+  config.active_storage.service = :local
+  # config.active_storage.variant_processor = :mini_magick
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil

@@ -1,0 +1,14 @@
+test:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>
+
+local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+
+# For production, you can use cloud storage if needed
+# For API-only apps, we just need a minimal config
+production:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+
