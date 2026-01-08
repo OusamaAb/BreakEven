@@ -1,8 +1,11 @@
 import { Link, useLocation } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
 import { supabase } from '../lib/supabase'
 
 export default function Layout({ children }) {
   const location = useLocation()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const navRef = useRef(null)
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -17,6 +20,27 @@ export default function Layout({ children }) {
     { path: '/settings', label: 'Settings', icon: '⚙️' },
   ]
 
+  const handleNavClick = () => {
+    setMobileMenuOpen(false)
+  }
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (navRef.current && !navRef.current.contains(event.target)) {
+        setMobileMenuOpen(false)
+      }
+    }
+
+    if (mobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [mobileMenuOpen])
+
   return (
     <div className="app-layout">
       {/* Background effects */}
@@ -27,7 +51,7 @@ export default function Layout({ children }) {
       </div>
 
       {/* Navigation */}
-      <nav className="app-nav">
+      <nav className="app-nav" ref={navRef}>
         <div className="nav-container">
           <Link to="/" className="nav-logo">
             <div className="nav-logo-icon">
@@ -62,6 +86,47 @@ export default function Layout({ children }) {
             </svg>
             <span>Logout</span>
           </button>
+
+          {/* Mobile Menu Button */}
+          <button 
+            className="nav-mobile-menu-btn"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              {mobileMenuOpen ? (
+                <path d="M18 6L6 18M6 6l12 12" />
+              ) : (
+                <path d="M3 12h18M3 6h18M3 18h18" />
+              )}
+            </svg>
+          </button>
+        </div>
+
+        {/* Mobile Dropdown Menu */}
+        <div className={`nav-mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
+          <div className="nav-mobile-menu-content">
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`nav-mobile-link ${location.pathname === item.path ? 'active' : ''}`}
+                onClick={handleNavClick}
+              >
+                <span className="nav-mobile-link-icon">{item.icon}</span>
+                <span className="nav-mobile-link-text">{item.label}</span>
+                {location.pathname === item.path && <div className="nav-mobile-link-indicator"></div>}
+              </Link>
+            ))}
+            <button onClick={() => { handleNavClick(); handleLogout(); }} className="nav-mobile-logout">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16,17 21,12 16,7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+              <span>Logout</span>
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -147,6 +212,7 @@ export default function Layout({ children }) {
           display: flex;
           align-items: center;
           justify-content: space-between;
+          gap: 12px;
         }
 
         .nav-logo {
@@ -260,26 +326,157 @@ export default function Layout({ children }) {
           padding: 32px;
         }
 
+        /* Mobile Menu Button */
+        .nav-mobile-menu-btn {
+          display: none;
+        }
+
+        /* Mobile Dropdown Menu */
+        .nav-mobile-menu {
+          display: none;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
           .nav-container {
             padding: 0 16px;
+            justify-content: space-between;
           }
 
-          .nav-link-text {
+          .nav-logo span {
             display: none;
           }
 
-          .nav-link {
-            padding: 10px 14px;
-          }
-
-          .nav-logout span {
-            display: none;
-          }
-
+          .nav-links,
           .nav-logout {
-            padding: 10px 14px;
+            display: none;
+          }
+
+          .nav-mobile-menu-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+          }
+
+          .nav-mobile-menu-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+          }
+
+          .nav-mobile-menu-btn svg {
+            width: 24px;
+            height: 24px;
+          }
+
+          .nav-mobile-menu {
+            display: block;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(5, 10, 21, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            opacity: 0;
+            z-index: 99;
+          }
+
+          .nav-mobile-menu.open {
+            max-height: 500px;
+            opacity: 1;
+          }
+
+          .nav-mobile-menu-content {
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+          }
+
+          .nav-mobile-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            text-decoration: none;
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 15px;
+            border-radius: 10px;
+            transition: all 0.2s;
+            position: relative;
+          }
+
+          .nav-mobile-link:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+          }
+
+          .nav-mobile-link.active {
+            color: white;
+            background: rgba(16, 185, 129, 0.15);
+          }
+
+          .nav-mobile-link-icon {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+          }
+
+          .nav-mobile-link-text {
+            flex: 1;
+          }
+
+          .nav-mobile-link-indicator {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 60%;
+            background: linear-gradient(180deg, #10b981, #3b82f6);
+            border-radius: 0 4px 4px 0;
+          }
+
+          .nav-mobile-logout {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 10px;
+            color: #f87171;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+            width: 100%;
+            text-align: left;
+          }
+
+          .nav-mobile-logout:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.4);
+          }
+
+          .nav-mobile-logout svg {
+            width: 20px;
+            height: 20px;
           }
 
           .app-content {

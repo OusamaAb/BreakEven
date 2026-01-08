@@ -10,7 +10,11 @@ module Api
         budget = current_user.budget || create_default_budget
         
         # Set effective_from before update so the callback can use it
-        budget.effective_from = params[:effective_from] if params[:effective_from].present?
+        if params[:effective_from].present?
+          effective_from = safe_parse_date_param(:effective_from)
+          return unless effective_from # Return early if date parsing failed
+          budget.effective_from = effective_from
+        end
         
         if budget.update(budget_params)
           # Reload to ensure associations are fresh after callbacks

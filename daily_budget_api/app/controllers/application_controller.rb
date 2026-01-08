@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::API
+  include DateParsing
+  
   # Disable parameter wrapping for API - we expect flat params
   wrap_parameters false
   before_action :authenticate!

@@ -56,8 +56,11 @@ module Api
         # This prevents computing fake ledgers for days before the user existed
         default_from = [budget.start_date, budget.today_in_timezone - 30.days].max
         
-        from_date = params[:from] ? Date.parse(params[:from]) : default_from
-        to_date = params[:to] ? Date.parse(params[:to]) : budget.today_in_timezone
+        from_date = safe_parse_date_param(:from, fallback: default_from)
+        return unless from_date # Return early if date parsing failed
+        
+        to_date = safe_parse_date_param(:to, fallback: budget.today_in_timezone)
+        return unless to_date # Return early if date parsing failed
 
         # Clamp from_date to never be before start_date
         from_date = [from_date, budget.start_date].max

@@ -46,7 +46,8 @@ class Budget < ApplicationRecord
   def handle_rate_change
     # Determine the effective date for this rate change
     rate_effective_from = if effective_from.present?
-      Date.parse(effective_from.to_s)
+      # effective_from is already a Date object from controller parsing
+      effective_from.is_a?(Date) ? effective_from : start_date
     else
       start_date
     end

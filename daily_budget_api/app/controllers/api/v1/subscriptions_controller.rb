@@ -20,7 +20,9 @@ module Api
         
         # Calculate next_charge_date from start_date if provided
         if params[:start_date].present?
-          start_date = Date.parse(params[:start_date])
+          start_date = safe_parse_date_param(:start_date)
+          return unless start_date # Return early if date parsing failed
+          
           if subscription.billing_cycle == 'monthly'
             subscription.next_charge_date = start_date.next_month
           else # yearly

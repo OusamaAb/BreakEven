@@ -5,8 +5,11 @@ module Api
         budget = current_user.budget
         return render json: { error: 'Budget not found' }, status: :not_found unless budget
 
-        from_date = params[:from] ? Date.parse(params[:from]) : budget.today_in_timezone - 30.days
-        to_date = params[:to] ? Date.parse(params[:to]) : budget.today_in_timezone
+        from_date = safe_parse_date_param(:from, fallback: budget.today_in_timezone - 30.days)
+        return unless from_date # Return early if date parsing failed
+        
+        to_date = safe_parse_date_param(:to, fallback: budget.today_in_timezone)
+        return unless to_date # Return early if date parsing failed
 
         expenses = budget.expenses
           .where(date: from_date..to_date)
