@@ -17,7 +17,7 @@ module Api
           budget.reload
           render json: budget_json(budget)
         else
-          render json: { errors: budget.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: budget.errors.full_messages }, status: :unprocessable_content
         end
       end
 

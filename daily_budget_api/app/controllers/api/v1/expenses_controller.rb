@@ -27,7 +27,7 @@ module Api
         if expense.save
           render json: expense_json(expense), status: :created
         else
-          render json: { errors: expense.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: expense.errors.full_messages }, status: :unprocessable_content
         end
       end
 
@@ -38,7 +38,7 @@ module Api
         if expense.update(expense_params)
           render json: expense_json(expense)
         else
-          render json: { errors: expense.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: expense.errors.full_messages }, status: :unprocessable_content
         end
       end
 

@@ -6,6 +6,34 @@ node_modules/
 # Testing
 coverage/
 .nyc_output
+*.coverage
+.coverage/
+.vitest/
+test-results/
+test-output/
+
+# Ignore test artifacts and temporary test files
+*.test.js.snap
+*.test.ts.snap
+__snapshots__/
+.jest/
+.jest-cache/
+
+# Ignore test-related documentation (if you want to hide these)
+# Uncomment if you want to ignore test documentation
+# src/**/*.test.md
+# *_TESTS*.md
+
+# Ignore actual test files (uncomment if you want to hide tests from GitHub)
+# src/**/__tests__/
+# src/**/*.test.js
+# src/**/*.test.jsx
+# src/**/*.test.ts
+# src/**/*.test.tsx
+# src/**/*.spec.js
+# src/**/*.spec.jsx
+# src/test/
+# src/test/**/*
 
 # Production build
 dist/

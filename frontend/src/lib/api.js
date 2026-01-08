@@ -100,4 +100,15 @@ export const api = {
     method: 'DELETE',
   }),
   getSubscriptionSummary: () => apiRequest('/api/v1/subscriptions/summary'),
+
+  // Stats
+  getSpendingStats: ({ from, to, bucket = 'daily', category } = {}) => {
+    const params = new URLSearchParams()
+    if (from) params.append('from', from)
+    if (to) params.append('to', to)
+    if (bucket) params.append('bucket', bucket)
+    if (category) params.append('category', category)
+
+    return apiRequest(`/api/v1/stats/spending?${params.toString()}`)
+  },
 }

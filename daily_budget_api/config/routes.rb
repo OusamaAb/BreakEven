@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       get 'daily/today', to: 'daily#today'
       get 'daily', to: 'daily#index'
       resources :expenses, only: [:index, :create, :update, :destroy]
+      get 'stats/spending', to: 'stats#spending'
       
       resources :subscriptions, only: [:index, :show, :create, :update, :destroy] do
         collection do
@@ -16,4 +17,3 @@ Rails.application.routes.draw do
     end
   end
 end
-

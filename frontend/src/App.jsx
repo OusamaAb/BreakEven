@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard'
 import History from './pages/History'
 import Subscriptions from './pages/Subscriptions'
 import Settings from './pages/Settings'
+import Statistics from './pages/Statistics'
 import Layout from './components/Layout'
 
 function App() {
@@ -171,6 +172,18 @@ function App() {
             session ? (
               <Layout>
                 <Subscriptions />
+              </Layout>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+        <Route
+          path="/statistics"
+          element={
+            session ? (
+              <Layout>
+                <Statistics />
               </Layout>
             ) : (
               <Navigate to="/login" replace />

@@ -36,6 +36,42 @@
 
 # Ignore test coverage
 /coverage/
+*.coverage
+.coverage/
+
+# Ignore test databases
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/db/test.sqlite3
+/db/test.sqlite3-journal
+
+# Ignore test logs
+/log/test.log
+/log/*.log
+!log/.keep
+
+# Ignore RSpec artifacts
+.rspec_status
+/.rspec_cache
+/rspec_examples.txt
+
+# Ignore test artifacts and temporary test files
+spec/examples.txt
+spec/spec_helper.txt
+test/tmp/
+test/dummy/
+
+# Ignore test-related documentation (if you want to hide these)
+# Uncomment if you want to ignore test documentation
+# spec/**/*.md
+# TESTING.md
+# *_TESTS*.md
+
+# Ignore actual test files (uncomment if you want to hide tests from GitHub)
+# spec/
+# spec/**/*_spec.rb
+# spec/**/*.rb
+# !spec/.keep
 
 # Ignore IDE files
 .idea/

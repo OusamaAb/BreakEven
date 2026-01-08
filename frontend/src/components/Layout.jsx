@@ -13,6 +13,7 @@ export default function Layout({ children }) {
     { path: '/', label: 'Dashboard', icon: '📊' },
     { path: '/history', label: 'History', icon: '📅' },
     { path: '/subscriptions', label: 'Subscriptions', icon: '📺' },
+    { path: '/statistics', label: 'Statistics', icon: '📈' },
     { path: '/settings', label: 'Settings', icon: '⚙️' },
   ]
 

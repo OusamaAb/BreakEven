@@ -31,7 +31,7 @@ module Api
         if subscription.save
           render json: subscription_json(subscription), status: :created
         else
-          render json: { errors: subscription.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: subscription.errors.full_messages }, status: :unprocessable_content
         end
       end
 
@@ -39,7 +39,7 @@ module Api
         if @subscription.update(subscription_params)
           render json: subscription_json(@subscription)
         else
-          render json: { errors: @subscription.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: @subscription.errors.full_messages }, status: :unprocessable_content
         end
       end
 

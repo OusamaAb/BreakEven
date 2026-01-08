@@ -40,6 +40,47 @@ yarn-error.log*
 *.bak
 *.backup
 
-# Documentation files (except README)
+# Documentation files (except README files)
 *.md
 !README.md
+!**/README.md
+
+# Ignore test-related documentation files (uncomment if you want to hide these)
+# BACKEND_TESTS_EXPLAINED.md
+# BACKEND_TESTS_FIXES.md
+# FRONTEND_TESTS.md
+# TESTING.md
+
+# Test coverage and artifacts
+coverage/
+*.coverage
+.coverage/
+.nyc_output
+.vitest/
+test-results/
+test-output/
+
+# RSpec test artifacts
+.rspec_status
+.rspec_cache/
+rspec_examples.txt
+
+# Test databases
+**/db/*.sqlite3
+**/db/*.sqlite3-journal
+**/db/test.sqlite3*
+
+# Ignore actual test files (uncomment if you want to hide ALL tests from GitHub)
+# Backend tests
+# daily_budget_api/spec/
+# daily_budget_api/spec/**/*
+# Frontend tests
+# frontend/src/**/__tests__/
+# frontend/src/**/*.test.*
+# frontend/src/**/*.spec.*
+# frontend/src/test/
+# Test configuration files
+# .rspec
+# spec_helper.rb
+# rails_helper.rb
+# vite.config.js (if it contains test config)
