@@ -2,5 +2,5 @@
 *.rake linguist-language=Ruby
 *.ru linguist-language=Ruby
 *.erb linguist-language=Ruby
-*.js linguist-language=JavaScript
-*.jsx linguist-language=JavaScript
+*.js linguist-language=React
+*.jsx linguist-language=React
