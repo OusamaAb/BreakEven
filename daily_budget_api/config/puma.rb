@@ -43,3 +43,6 @@ pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
 
+# Silence single worker warning (common for small apps)
+silence_single_worker_warning
+
