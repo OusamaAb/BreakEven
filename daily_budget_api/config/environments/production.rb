@@ -23,7 +23,8 @@ Rails.application.configure do
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missing.
-  config.assets.compile = false
+  # Note: API-only apps don't have an assets pipeline, so this is commented out
+  # config.assets.compile = false
 
   # Enable serving of images, stylesheets, and JavaScript assets from an asset server.
   # config.asset_host = "http://assets.example.com"
