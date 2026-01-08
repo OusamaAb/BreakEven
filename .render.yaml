@@ -1,0 +1,49 @@
+# Render Blueprint Configuration
+# This file allows you to define your entire stack on Render
+# See: https://render.com/docs/blueprint-spec
+
+services:
+  # Backend API
+  - type: web
+    name: breakeven-api
+    env: ruby
+    region: oregon
+    plan: starter
+    buildCommand: cd daily_budget_api && bundle install && bundle exec rails assets:precompile
+    startCommand: cd daily_budget_api && bundle exec puma -C config/puma.rb
+    rootDir: daily_budget_api
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_MASTER_KEY
+        sync: false  # Set this in Render dashboard
+      - key: DATABASE_URL
+        sync: false  # Set this in Render dashboard
+      - key: SUPABASE_URL
+        sync: false  # Set this in Render dashboard
+      - key: SUPABASE_JWT_SECRET
+        sync: false  # Set this in Render dashboard
+      - key: CORS_ORIGINS
+        sync: false  # Set this after frontend is deployed
+      - key: RAILS_LOG_TO_STDOUT
+        value: "true"
+      - key: RAILS_SERVE_STATIC_FILES
+        value: "true"
+
+  # Frontend
+  - type: web
+    name: breakeven-frontend
+    env: static
+    region: oregon
+    plan: starter
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    rootDir: frontend
+    envVars:
+      - key: VITE_SUPABASE_URL
+        sync: false  # Set this in Render dashboard
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false  # Set this in Render dashboard
+      - key: VITE_API_BASE_URL
+        sync: false  # Set this after backend is deployed
+
