@@ -27,6 +27,16 @@ function App() {
       setSession(session)
       setLoading(false)
       
+      // Handle sign out - redirect to login
+      if (event === 'SIGNED_OUT') {
+        // Use window.location to ensure full page reload and clear state
+        const currentPath = window.location.pathname
+        if (currentPath !== '/login') {
+          window.location.href = '/login'
+        }
+        return
+      }
+      
       // Clean up URL hash after successful sign in
       if (event === 'SIGNED_IN' && window.location.hash) {
         window.history.replaceState(null, '', window.location.pathname + window.location.search)

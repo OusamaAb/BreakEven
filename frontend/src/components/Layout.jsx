@@ -1,15 +1,22 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from '../lib/supabase'
 
 export default function Layout({ children }) {
   const location = useLocation()
+  const navigate = useNavigate()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const navRef = useRef(null)
 
   const handleLogout = async () => {
-    await supabase.auth.signOut()
-    window.location.href = '/login'
+    try {
+      await supabase.auth.signOut()
+      // Navigation will be handled by auth state change listener in App.jsx
+    } catch (error) {
+      console.error('Logout error:', error)
+      // Fallback: force navigation if auth state change doesn't fire
+      navigate('/login', { replace: true })
+    }
   }
 
   const navItems = [
